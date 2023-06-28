@@ -27,7 +27,13 @@ def index():
         </form>
         <ul>
           % for item in msgs:
-            <code>{{item[1]}}</code><br> <code>{{item[0]}}</code>
+            <code>{{item[1]}}</code><br> <code>
+            % if item[0].startswith('https://') or item[0].startswith('http://'):
+            <a target=_blank href={{item[0]}}>{{item[0]}}</a>
+            % else:
+            {{item[0]}}
+            % end
+            </code>
             <br>
             <hr>
           % end
