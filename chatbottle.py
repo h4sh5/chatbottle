@@ -22,8 +22,9 @@ def index():
     return template('''
         <title>chatbottle</title>
         <form action=/msg method=post>
-        <p>text <input name=text></input></p>
-        <input type=submit value=go>
+        <p>text <input name=text></input>
+        <input type=submit value=go></p>
+        <p><a href=/clear>clear all</a></p>
         </form>
         <ul>
           % for item in msgs:
@@ -46,6 +47,14 @@ def msg():
     conn = db.cursor()
     conn.execute("INSERT INTO msgs (msg) VALUES (?)", (text,))
     return redirect('/')
+
+@route("/clear")
+def clear():
+    conn = db.cursor()
+    conn.execute("DELETE FROM msgs")
+    db.commit()
+    return redirect('/')
+
 
 host = '0.0.0.0'
 
