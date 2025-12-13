@@ -20,24 +20,37 @@ def index():
     conn.execute("SELECT msg,ts FROM msgs")
     msgs = [ (row[0],row[1]) for row in conn.fetchall()]
     return template('''
-        <title>chatbottle</title>
-        <form action=/msg method=post>
-        <p>text <input name=text></input>
-        <input type=submit value=go></p>
-        <p><a href=/clear>clear all</a></p>
-        </form>
-        <ul>
-          % for item in msgs:
-            <code>{{item[1]}}</code><br> <code>
-            % if item[0].startswith('https://') or item[0].startswith('http://'):
-            <a target=_blank href={{item[0]}}>{{item[0]}}</a>
-            % else:
-            {{item[0]}}
-            % end
-            </code>
-            <br>
-            <hr>
-          % end
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>chatbottle</title>
+<style>
+#gobutton {
+    border: none;
+    width: 20em;
+    height: 2em;
+}
+
+</style>
+</head>
+
+<form action=/msg method=post>
+<textarea name=text cols=80 rows=5></textarea>
+<p><input type=submit value=go id=gobutton></p>
+<p><a href=/clear>clear all</a></p>
+</form>
+<ul>
+  % for item in msgs:
+    <code>{{item[1]}}</code>
+    % if item[0].startswith('https://') or item[0].startswith('http://'):
+    <a target=_blank href={{item[0]}}>{{item[0]}}</a>
+    % else:
+    <pre>{{item[0]}}</pre>
+    % end
+    <hr>
+  % end
 </ul>
     ''', msgs = msgs)
 
